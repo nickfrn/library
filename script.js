@@ -1,7 +1,7 @@
-const myLibrary = [];
+let myLibrary = [];
 
 function Book(title, author, pages, read) {
-    this.id = crypto.randomUUID();
+    this.uuid = crypto.randomUUID();
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -18,30 +18,35 @@ function renderBooksTable(array) {
     array.forEach(book => {
         let bookRow = document.createElement('tr');
 
-        let bookId = document.createElement('td');
+        bookRow.setAttribute('data-id', book.uuid);
+
         let bookTitle = document.createElement('td');
         let bookAuthor = document.createElement('td');
         let bookPages = document.createElement('td');
         let bookStatus = document.createElement('td');
 
-        bookId.textContent = book.id;
+        let deleteBtn = document.createElement('button');   
+        deleteBtn.classList.add('delete-book');  
+        deleteBtn.textContent = 'Delete Book';  
+
         bookTitle.textContent = book.title;
         bookAuthor.textContent = book.author;
         bookPages.textContent = book.pages;
         bookStatus.textContent = book.read;
 
-        bookRow.appendChild(bookId);
         bookRow.appendChild(bookTitle);
         bookRow.appendChild(bookAuthor);
         bookRow.appendChild(bookPages);
         bookRow.appendChild(bookStatus);
+        bookRow.appendChild(deleteBtn);
 
-        table.appendChild(bookRow);
+        tableBody.appendChild(bookRow);
     });
 }
 
-const table = document.querySelector('table');
+const tableBody = document.querySelector('tbody');
 const bookDialog = document.querySelector('#newBookDialog');
+const deleteBtn = document.querySelector('#deleteBook');
 const dialogBtn = document.querySelector('#showDialog');
 const confirmBtn = document.querySelector('#confirm');
 const cancelBtn = document.querySelector('#cancel');
@@ -69,4 +74,14 @@ cancelBtn.addEventListener('click', (event) => {
     bookDialog.close();
 });
 
-renderBooksTable(myLibrary);
+tableBody.addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-book')) {
+        let row = event.target.closest('tr');
+        let rowId = row.getAttribute('data-id');
+
+        myLibrary = myLibrary.filter((book) => book.uuid !== rowId);
+        tableBody.innerHTML = '';
+
+        renderBooksTable(myLibrary);
+    };
+});
