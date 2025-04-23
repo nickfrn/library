@@ -8,6 +8,10 @@ function Book(title, author, pages, read) {
     this.read = read;
 }
 
+Book.prototype.changeStatus = function() {
+    return this.read = !this.read;
+};
+
 function addBookToLibrary(title, author, pages, read) {
     const newBook = new Book(title, author, pages, read);
 
@@ -25,6 +29,10 @@ function renderBooksTable(array) {
         let bookPages = document.createElement('td');
         let bookStatus = document.createElement('td');
 
+        let updateBtn = document.createElement('button');
+        updateBtn.classList.add('update-status');
+        updateBtn.textContent = 'Update Read Status';
+
         let deleteBtn = document.createElement('button');   
         deleteBtn.classList.add('delete-book');  
         deleteBtn.textContent = 'Delete Book';  
@@ -32,12 +40,13 @@ function renderBooksTable(array) {
         bookTitle.textContent = book.title;
         bookAuthor.textContent = book.author;
         bookPages.textContent = book.pages;
-        bookStatus.textContent = book.read;
+        bookStatus.textContent = book.read ? 'Read' : 'Not Read Yet';
 
         bookRow.appendChild(bookTitle);
         bookRow.appendChild(bookAuthor);
         bookRow.appendChild(bookPages);
         bookRow.appendChild(bookStatus);
+        bookRow.appendChild(updateBtn);
         bookRow.appendChild(deleteBtn);
 
         tableBody.appendChild(bookRow);
@@ -81,7 +90,20 @@ tableBody.addEventListener('click', (event) => {
 
         myLibrary = myLibrary.filter((book) => book.uuid !== rowId);
         tableBody.innerHTML = '';
+    }; 
+    
+    if (event.target.classList.contains('update-status')) {
+        let row = event.target.closest('tr');
+        let rowId = row.getAttribute('data-id');
 
-        renderBooksTable(myLibrary);
+        myLibrary.forEach(book => {
+            if (book.uuid === rowId) {
+                book.changeStatus();
+            };  
+        });
+
+        tableBody.innerHTML = '';
     };
+
+    renderBooksTable(myLibrary);
 });
