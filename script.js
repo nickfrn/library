@@ -40,10 +40,33 @@ function renderBooksTable(array) {
     });
 }
 
-addBookToLibrary('the bobinsons', 'bob', 278, 'read');
-addBookToLibrary('the stevensons', 'steve', 301, 'not read');
-addBookToLibrary('the book of books', 'michael jesus', 867, 'read');
-
 const table = document.querySelector('table');
+const bookDialog = document.querySelector('#newBookDialog');
+const dialogBtn = document.querySelector('#showDialog');
+const confirmBtn = document.querySelector('#confirm');
+const cancelBtn = document.querySelector('#cancel');
+
+dialogBtn.addEventListener('click', () => {
+    bookDialog.showModal();
+});
+
+confirmBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    let title = document.querySelector('#title');
+    let author = document.querySelector('#author');
+    let pages = document.querySelector('#pages');
+    let status = document.querySelector('#status');
+
+    addBookToLibrary(title.value, author.value, pages.value, status.value);
+
+    bookDialog.close();
+    renderBooksTable(myLibrary);
+});
+
+cancelBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    bookDialog.close();
+});
 
 renderBooksTable(myLibrary);
