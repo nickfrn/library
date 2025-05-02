@@ -1,19 +1,21 @@
 let myLibrary = [];
 
-function Book(title, author, pages, read) {
-    this.uuid = crypto.randomUUID();
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
+class Book {
+    constructor(title, author, pages, status) {
+        this.uuid = crypto.randomUUID();
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.status = status === 'true';
+    }
+
+    changeStatus() {
+        return this.status = !this.status;
+    }
 }
 
-Book.prototype.changeStatus = function() {
-    return this.read = !this.read;
-};
-
-function addBookToLibrary(title, author, pages, read) {
-    const newBook = new Book(title, author, pages, read);
+function addBookToLibrary(title, author, pages, status) {
+    const newBook = new Book(title, author, pages, status);
 
     myLibrary.push(newBook);
 }
@@ -40,7 +42,12 @@ function renderBooksTable(array) {
         bookTitle.textContent = book.title;
         bookAuthor.textContent = book.author;
         bookPages.textContent = book.pages;
-        bookStatus.textContent = book.read ? 'Read' : 'Not Read Yet';
+
+        if (book.status === true) {
+            bookStatus.textContent = 'Read';
+        } else {
+            bookStatus.textContent = 'Not Read Yet';
+        }
 
         bookRow.appendChild(bookTitle);
         bookRow.appendChild(bookAuthor);
