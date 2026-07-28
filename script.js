@@ -60,19 +60,24 @@ function renderBooksTable(array) {
     });
 }
 
+// Table selectors
 const tableBody = document.querySelector('tbody');
 const bookDialog = document.querySelector('#newBookDialog');
 const deleteBtn = document.querySelector('#deleteBook');
 const dialogBtn = document.querySelector('#showDialog');
 const confirmBtn = document.querySelector('#confirm');
 const cancelBtn = document.querySelector('#cancel');
+// Form input selectors
+const title = document.querySelector('#title');
+const author = document.querySelector('#author');
+const pages = document.querySelector('#pages');
 
 dialogBtn.addEventListener('click', () => {
     bookDialog.showModal();
 });
 
 confirmBtn.addEventListener('click', (event) => {
-    event.preventDefault();
+    // event.preventDefault();
 
     let title = document.querySelector('#title');
     let author = document.querySelector('#author');
