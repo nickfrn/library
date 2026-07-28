@@ -2,5 +2,6 @@
 
 ## TODO
 - [ ] Fix books duplication
-- [ ] Refactor entire logic
+- [ ] Refactor code
 - [ ] Style webpage
+- [ ] Add form validation with JS
